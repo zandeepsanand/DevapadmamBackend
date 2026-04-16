@@ -5,7 +5,7 @@ import { HeroCarousel } from "@/components/HeroCarousel";
 export default async function Home() {
   let sampleVillas: VillaCardProps[] = [];
   try {
-    const res = await fetch("http://127.0.0.1:8000/api/villas/", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/villas/`, {
       cache: "no-store", // Bypass cache to mirror active backend
     });
     if (!res.ok) {

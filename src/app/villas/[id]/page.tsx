@@ -57,7 +57,7 @@ export default async function VillaDetailPage({
   let bookedDateStrings: string[] = [];
 
   try {
-    const res = await fetch(`http://127.0.0.1:8000/api/villas/${id}/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/villas/${id}/`, {
       cache: "no-store",
     });
     if (!res.ok) throw new Error("Failed");
