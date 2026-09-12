@@ -1,32 +1,25 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    root: process.cwd(),
+  },
   images: {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-      {
-        protocol: "https",
-        hostname: "images.jdmagicbox.com",
+        hostname: "**",
       },
       {
         protocol: "http",
-        hostname: "127.0.0.1",
-      },
-      {
-        protocol: "https",
-        hostname: "placehold.co",
-      },
-      {
-        protocol: "https",
-        hostname: "cdn.confident-group.com",
+        hostname: "**",
       },
     ],
   },
-  // Allows the mobile device to access the dev server without having Next.js block cross-origin JS chunks / HMR
-  allowedDevOrigins: ["localhost", "192.168.0.101"],
+  allowedDevOrigins: ["localhost", "127.0.0.1", "192.168.0.100", "192.168.0.101", "192.168.0.102", "192.168.0.*"],
 };
 
 export default nextConfig;
+
+
