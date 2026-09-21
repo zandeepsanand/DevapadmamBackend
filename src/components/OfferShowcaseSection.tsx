@@ -62,29 +62,15 @@ export function OfferShowcaseSection() {
           
           {/* 2. Top Social Proof: Overlapping Guest Avatars + Review Count (Shown on both Mobile & Desktop) */}
           <div className="flex items-center gap-2.5 sm:gap-3 mb-5 sm:mb-6">
-            <div className="flex -space-x-2 sm:-space-x-2.5 overflow-hidden">
-              {[
-                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&h=80&q=80",
-                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&h=80&q=80",
-                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&h=80&q=80",
-                "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=80&h=80&q=80"
-              ].map((src, i) => (
-                <img
-                  key={i}
-                  src={src}
-                  alt={`Guest review ${i + 1}`}
-                  className="inline-block h-8 w-8 sm:h-9 sm:w-9 rounded-full ring-2 ring-white dark:ring-zinc-900 object-cover shadow-sm"
-                />
-              ))}
-            </div>
+           
             
             <div className="text-left leading-tight">
               <div className="text-xs sm:text-sm font-bold text-zinc-900 dark:text-white flex items-center gap-1">
-                <span>60K+</span>
+                <span>88</span>
                 <span className="text-[11px] font-normal text-zinc-500">Reviews</span>
               </div>
               <div className="flex items-center text-[11px] sm:text-xs text-amber-500 font-semibold">
-                <Star className="w-3 h-3 fill-amber-400 text-amber-400 mr-0.5" /> 4.98 Rating
+                <Star className="w-3 h-3 fill-amber-400 text-amber-400 mr-0.5" /> 5.0 Rating
               </div>
             </div>
           </div>
