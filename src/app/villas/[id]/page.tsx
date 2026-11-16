@@ -52,10 +52,14 @@ async function fetchBookedDates(icalUrl: string): Promise<string[]> {
 
 export default async function VillaDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams?: Promise<{ bhk?: string }>;
 }) {
   const { id } = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const initialBhk = resolvedSearchParams.bhk ? parseInt(resolvedSearchParams.bhk, 10) : undefined;
   
   let villa: any = getVillaById(id) || LUXURY_VILLAS[0];
   let bookedDateStrings: string[] = [];
@@ -90,6 +94,7 @@ export default async function VillaDetailPage({
         icalUrl: backendVilla.ical_url || fallback.icalUrl,
         highlights: fallback.highlights,
         amenities: fallback.amenities,
+        bhkTiers: fallback.bhkTiers,
       };
     }
   } catch (error) {
@@ -254,6 +259,8 @@ export default async function VillaDetailPage({
               pricePerNight={villa.pricePerNight}
               bookedDateStrings={bookedDateStrings}
               villaName={villa.name}
+              bhkTiers={villa.bhkTiers}
+              initialBhk={initialBhk}
             />
           </div>
 

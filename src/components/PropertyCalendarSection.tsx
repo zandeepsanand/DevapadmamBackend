@@ -9,7 +9,7 @@ import Link from "next/link";
 import { LUXURY_VILLAS, VillaData } from "@/lib/villasData";
 
 export function PropertyCalendarSection() {
-  const [selectedVillaId, setSelectedVillaId] = useState<string>("1");
+  const [selectedVillaId, setSelectedVillaId] = useState<string>("5");
   const [bookedDateStrings, setBookedDateStrings] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [range, setRange] = useState<DateRange | undefined>();

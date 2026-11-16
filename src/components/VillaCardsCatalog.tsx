@@ -20,11 +20,15 @@ export function VillaCardsCatalog({ initialVillas }: VillaCardsCatalogProps) {
   // 2. If guests >= 6: automatically remove Devapadmam Minnaaram (2 BHK, max 5), showing ONLY Devapadmam 3 BHK and 6 BHK.
   // 3. If guests > 10: show only Devapadmam 6 BHK (max 16).
   const filteredVillas = initialVillas.filter((villa) => {
+    const isSreeramam = villa.id === "5" || villa.name.toLowerCase().includes("sreeramam");
     const isNaarayaneeyam = villa.id === "3" || villa.name.toLowerCase().includes("naarayaneeyam");
     const isMinnaaram = villa.id === "2" || villa.name.toLowerCase().includes("minnaaram");
     const is3BHK = villa.id === "4" || villa.name.toLowerCase().includes("3 bhk");
     const is6BHK = villa.id === "1" || villa.name.toLowerCase().includes("6 bhk");
 
+    if (isSreeramam) {
+      return guests <= 14;
+    }
     if (isNaarayaneeyam) {
       return guests <= 4;
     }
@@ -72,10 +76,10 @@ export function VillaCardsCatalog({ initialVillas }: VillaCardsCatalogProps) {
           </div>
 
           <p className="text-xs text-muted-foreground text-left sm:text-right max-w-sm">
-            {guests <= 4 && "Showing all 4 Heritage Stays in Trivandrum."}
+            {guests <= 4 && "Showing all Heritage Stays in Trivandrum."}
             {guests === 5 && "Naarayaneeyam automatically removed (max 4 capacity)."}
-            {guests >= 6 && guests <= 10 && "Showing only 3 BHK and 6 BHK (2 BHKs removed for 6+ guests)."}
-            {guests > 10 && "Showing 6 BHK Grand Estate (accommodates up to 16 guests)."}
+            {guests >= 6 && guests <= 10 && "Showing Sreeramam, Devapadmam 3 BHK & 6 BHK (2 BHKs removed for 6+ guests)."}
+            {guests > 10 && "Showing Sreeramam & Devapadmam 6 BHK (large group estates up to 16 guests)."}
           </p>
         </div>
       </div>
@@ -83,7 +87,7 @@ export function VillaCardsCatalog({ initialVillas }: VillaCardsCatalogProps) {
       {/* Villa Cards Grid with Framer Motion AnimatePresence & Spring Layout Animations */}
       <motion.div 
         layout 
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6"
       >
         <AnimatePresence mode="popLayout">
           {filteredVillas.map((villa) => (
@@ -118,6 +122,7 @@ export function VillaCardsCatalog({ initialVillas }: VillaCardsCatalogProps) {
                 maxGuests={villa.maxGuests}
                 bedrooms={villa.bedrooms}
                 baths={villa.baths}
+                bhkTiers={villa.bhkTiers}
               />
             </motion.div>
           ))}

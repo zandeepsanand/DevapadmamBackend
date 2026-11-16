@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, Users, Bed, Bath, Heart, ChevronLeft, ChevronRight, Tag, CheckCircle2 } from "lucide-react";
+import { Star, Users, Bed, Bath, Heart, ChevronLeft, ChevronRight, Tag, CheckCircle2, Sparkles } from "lucide-react";
+import { BhkTier } from "@/lib/villasData";
 
 export interface VillaCardProps {
   id: string;
@@ -19,9 +20,12 @@ export interface VillaCardProps {
   baths?: number;
   tagline?: string;
   autoPlayInterval?: number;
+  bhkTiers?: BhkTier[];
 }
 
 const FALLBACK_IMAGES: Record<string, string> = {
+  "5": "/images/sreeramam5bhk/sree1.jpeg",
+  "sreeramam": "/images/sreeramam5bhk/sree1.jpeg",
   "1": "/images/devapadmam6bhk/dev2.jpeg",
   "4": "/images/devapadmam6bhk/dev28.jpeg",
   "2": "/images/minnaram2bhk/minnaram2.jpeg",
@@ -41,15 +45,27 @@ export function VillaCard({
   baths = 3,
   tagline = "Heritage Vacation Rental",
   autoPlayInterval,
+  bhkTiers,
 }: VillaCardProps) {
   // Use galleryImages if provided, otherwise use fallback
   const images = (galleryImages && galleryImages.length > 0)
     ? galleryImages
-    : [imageUrl || FALLBACK_IMAGES[id] || "/images/devapadmam6bhk/dev2.jpeg"];
+    : [imageUrl || FALLBACK_IMAGES[id] || "/images/sreeramam5bhk/sree1.jpeg"];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  // Active BHK tier state (for properties like Sreeramam with 5, 4, 3, 2 BHK options)
+  const [selectedBhk, setSelectedBhk] = useState<number | null>(
+    bhkTiers && bhkTiers.length > 0 ? bhkTiers[0].bhk : null
+  );
+
+  const currentTier = bhkTiers?.find((t) => t.bhk === selectedBhk);
+  const activePrice = currentTier ? currentTier.pricePerNight : pricePerNight;
+  const activeBedrooms = currentTier ? currentTier.bedrooms : bedrooms;
+  const activeBaths = currentTier ? currentTier.baths : baths;
+  const activeMaxGuests = currentTier ? currentTier.maxGuests : maxGuests;
 
   // Client mount: pick a randomized photo starting point so each visit shows different images
   // and multiple cards never display identical photos at the same time
@@ -86,12 +102,13 @@ export function VillaCard({
   };
 
   // Compute 15% discount for offer display
-  const originalPrice = Math.round(pricePerNight * 1.18);
+  const originalPrice = Math.round(activePrice * 1.18);
   const activeImage = images[currentIndex] || images[0];
+  const targetHref = selectedBhk ? `/villas/${id}?bhk=${selectedBhk}` : `/villas/${id}`;
 
   return (
     <Link
-      href={`/villas/${id}`}
+      href={targetHref}
       className="block h-full cursor-pointer group select-none"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -219,18 +236,62 @@ export function VillaCard({
             <p className="text-xs text-muted-foreground line-clamp-1">{tagline}</p>
           </div>
 
+          {/* Interactive BHK Tier Switcher */}
+          {bhkTiers && bhkTiers.length > 0 && (
+            <div className="space-y-1.5 pt-0.5">
+              <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400">
+                  <Sparkles className="w-3 h-3 text-amber-500" /> BHK Option:
+                </span>
+                <span className="text-foreground font-bold">
+                  {currentTier?.label || `${selectedBhk} BHK`} • ₹{activePrice.toLocaleString("en-IN")}/day
+                </span>
+              </div>
+              <div className="grid grid-cols-4 gap-1.5">
+                {bhkTiers.map((tier) => {
+                  const isSelected = selectedBhk === tier.bhk;
+                  return (
+                    <button
+                      key={tier.bhk}
+                      type="button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setSelectedBhk(tier.bhk);
+                      }}
+                      className={`py-1 px-1 rounded-lg text-center transition-all duration-200 border cursor-pointer ${
+                        isSelected
+                          ? "gold-gradient-bg text-white border-amber-500 shadow-sm font-bold scale-[1.03]"
+                          : "bg-zinc-100 dark:bg-zinc-800/80 text-zinc-700 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700 hover:border-amber-400 font-medium hover:bg-zinc-200/70"
+                      }`}
+                    >
+                      <div className="text-[10px] leading-tight font-bold">{tier.label}</div>
+                      <div
+                        className={`text-[9px] leading-tight mt-0.5 ${
+                          isSelected ? "text-amber-100 font-bold" : "text-emerald-600 dark:text-emerald-400 font-semibold"
+                        }`}
+                      >
+                        ₹{(tier.pricePerNight / 1000).toFixed(tier.pricePerNight % 1000 === 0 ? 0 : 1)}k
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Specs Pills (Airbnb style) */}
           <div className="flex items-center justify-between text-xs font-semibold text-muted-foreground border-y border-border/60 py-2.5">
             <span className="flex items-center gap-1">
-              <Users className="w-3.5 h-3.5 text-gold" /> {maxGuests} Guests
+              <Users className="w-3.5 h-3.5 text-gold" /> {activeMaxGuests} Guests
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
-              <Bed className="w-3.5 h-3.5 text-gold" /> {bedrooms} BR
+              <Bed className="w-3.5 h-3.5 text-gold" /> {activeBedrooms} BR
             </span>
             <span>•</span>
             <span className="flex items-center gap-1">
-              <Bath className="w-3.5 h-3.5 text-gold" /> {baths} Baths
+              <Bath className="w-3.5 h-3.5 text-gold" /> {activeBaths} Baths
             </span>
           </div>
 
@@ -239,7 +300,7 @@ export function VillaCard({
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0">
                 <span className="text-lg font-bold font-serif text-foreground">
-                  ₹{pricePerNight.toLocaleString("en-IN")}
+                  ₹{activePrice.toLocaleString("en-IN")}
                 </span>
                 <span className="text-[10px] text-muted-foreground line-through font-normal whitespace-nowrap">
                   ₹{originalPrice.toLocaleString("en-IN")}

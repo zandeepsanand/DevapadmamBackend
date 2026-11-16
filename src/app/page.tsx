@@ -49,11 +49,12 @@ export default async function Home() {
             icalUrl: item.ical_url || fallback.icalUrl,
             highlights: fallback.highlights,
             amenities: fallback.amenities,
+            bhkTiers: fallback.bhkTiers,
           };
         });
 
-        // Ensure 6 BHK (ID 1) and 3 BHK (ID 4) are displayed first side-by-side
-        const idOrder = ["1", "4", "2", "3"];
+        // Ensure Sreeramam (ID 5) is displayed first, followed by 6 BHK (ID 1) and 3 BHK (ID 4)
+        const idOrder = ["5", "1", "4", "2", "3"];
         displayVillas.sort((a, b) => {
           const idxA = idOrder.indexOf(a.id);
           const idxB = idOrder.indexOf(b.id);

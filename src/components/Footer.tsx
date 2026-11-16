@@ -42,6 +42,12 @@ export function Footer() {
             </h4>
             <ul className="space-y-2.5 text-xs text-white/70 font-medium">
               <li>
+                <Link href="/villas/5" className="hover:text-white transition flex justify-between">
+                  <span>Sreeramam Heritage Stay</span>
+                  <span className="text-amber-300/80">From ₹6,500</span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/villas/1" className="hover:text-white transition flex justify-between">
                   <span>Devapadmam 6 BHK Stay</span>
                   <span className="text-amber-300/80">₹25,000</span>

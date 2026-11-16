@@ -17,6 +17,16 @@ interface ExperienceItem {
 
 const EXPERIENCES: ExperienceItem[] = [
   {
+    id: "sreeramam",
+    title: "Sreeramam Heritage Stay",
+    subtitle: "2 to 5 BHK Grand Heritage Haven",
+    description:
+      "Welcome to Sreeramam, an exceptional heritage retreat offering flexible luxury living from intimate 2 BHK stays up to a grand 5 BHK royal estate. Features authentic Kerala woodwork, lush surroundings, air-conditioned comfort, and bespoke service.",
+    image: "/images/sreeramam5bhk/sree1.jpeg",
+    highlights: ["2, 3, 4 & 5 BHK Options", "Grand Heritage Architecture", "Up to 14 Guests"],
+    icon: Compass,
+  },
+  {
     id: "devapadmam6bhk",
     title: "Devapadmam Heritage Stay 6BHK",
     subtitle: "Premium Heritage Experience",
@@ -59,7 +69,7 @@ const EXPERIENCES: ExperienceItem[] = [
 ];
 
 export function ExperienceTabs() {
-  const [activeTab, setActiveTab] = useState<string>("architecture");
+  const [activeTab, setActiveTab] = useState<string>("sreeramam");
   const current = EXPERIENCES.find((e) => e.id === activeTab) || EXPERIENCES[0];
 
   return (

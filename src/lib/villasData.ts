@@ -1,3 +1,14 @@
+export interface BhkTier {
+  bhk: number;
+  label: string;
+  pricePerNight: number;
+  bedrooms: number;
+  beds: number;
+  baths: number;
+  maxGuests: number;
+  description?: string;
+}
+
 export interface VillaData {
   id: string;
   name: string;
@@ -16,7 +27,75 @@ export interface VillaData {
   icalUrl: string;
   highlights: string[];
   amenities: { name: string; icon: string }[];
+  bhkTiers?: BhkTier[];
 }
+
+// 20 authentic photos of Sreeramam Heritage Stay
+export const SREERAMAM_ALL_IMAGES: string[] = [
+  "/images/sreeramam5bhk/sree1.jpeg",
+  "/images/sreeramam5bhk/sree2.jpeg",
+  "/images/sreeramam5bhk/sree3.jpeg",
+  "/images/sreeramam5bhk/sree4.jpeg",
+  "/images/sreeramam5bhk/sree5.jpeg",
+  "/images/sreeramam5bhk/sree6.jpeg",
+  "/images/sreeramam5bhk/sree7.jpeg",
+  "/images/sreeramam5bhk/sree8.jpeg",
+  "/images/sreeramam5bhk/sree9.jpeg",
+  "/images/sreeramam5bhk/sree10.jpeg",
+  "/images/sreeramam5bhk/sree11.jpeg",
+  "/images/sreeramam5bhk/sree12.jpeg",
+  "/images/sreeramam5bhk/sree13.jpeg",
+  "/images/sreeramam5bhk/sree14.jpeg",
+  "/images/sreeramam5bhk/sree15.jpeg",
+  "/images/sreeramam5bhk/sree16.jpeg",
+  "/images/sreeramam5bhk/sree17.jpeg",
+  "/images/sreeramam5bhk/sree18.jpeg",
+  "/images/sreeramam5bhk/sree19.jpeg",
+  "/images/sreeramam5bhk/sree20.jpeg",
+];
+
+export const SREERAMAM_BHK_TIERS: BhkTier[] = [
+  {
+    bhk: 5,
+    label: "5 BHK",
+    pricePerNight: 19500,
+    bedrooms: 5,
+    beds: 7,
+    baths: 5,
+    maxGuests: 14,
+    description: "The entire 5 BHK grand luxury estate for up to 14 guests. Full access to all 5 air-conditioned bedrooms, verandas, private living spaces, and gardens at ₹19,500/night."
+  },
+  {
+    bhk: 4,
+    label: "4 BHK",
+    pricePerNight: 16000,
+    bedrooms: 4,
+    beds: 6,
+    baths: 4,
+    maxGuests: 11,
+    description: "Spacious 4 BHK configuration accommodating up to 11 guests. Enjoy 4 premium air-conditioned bedrooms and exclusive living areas at ₹16,000/night."
+  },
+  {
+    bhk: 3,
+    label: "3 BHK",
+    pricePerNight: 13000,
+    bedrooms: 3,
+    beds: 4,
+    baths: 3,
+    maxGuests: 8,
+    description: "Curated 3 BHK heritage stay for up to 8 guests. 3 private air-conditioned suites with lush garden views at ₹13,000/night."
+  },
+  {
+    bhk: 2,
+    label: "2 BHK",
+    pricePerNight: 6500,
+    bedrooms: 2,
+    beds: 3,
+    baths: 2,
+    maxGuests: 5,
+    description: "Intimate 2 BHK sanctuary for up to 5 guests. 2 serene air-conditioned bedrooms, living room, and balcony at ₹6,500/night."
+  }
+];
 
 // 30 authentic photos of Devapadmam Heritage Stay
 export const DEVAPADMAM_6BHK_ALL_IMAGES: string[] = [
@@ -100,6 +179,40 @@ export const NAARAYANEEYAM_ALL_IMAGES: string[] = [
 ];
 
 export const LUXURY_VILLAS: VillaData[] = [
+  {
+    id: "5",
+    name: "Sreeramam Heritage Stay",
+    tagline: "Grand Heritage Haven (2, 3, 4 & 5 BHK Options)",
+    location: "Thiruvananthapuram, Kerala",
+    pricePerNight: 19500,
+    rating: 5.0,
+    reviewsCount: 56,
+    maxGuests: 14,
+    bedrooms: 5,
+    beds: 7,
+    baths: 5,
+    description: "Welcome to Sreeramam, an exceptional heritage retreat offering bespoke flexibility from 2 BHK to a grand 5 BHK estate in Thiruvananthapuram. Built with traditional Kerala elegance and luxurious modern touches, Sreeramam provides serene verandas, premium air-conditioned suites, high-speed Wi-Fi, fully equipped kitchen, and lush surroundings. Available in 5 BHK (₹19,500/night), 4 BHK (₹16,000/night), 3 BHK (₹13,000/night), and 2 BHK (₹6,500/night) configurations.",
+    featuredImage: "/images/sreeramam5bhk/sree1.jpeg",
+    galleryImages: SREERAMAM_ALL_IMAGES,
+    icalUrl: "https://www.airbnb.co.in/calendar/ical/1281872170914882245.ics?t=c5f706c5884249be9311bb50c1beef53",
+    highlights: [
+      "Customizable configurations: 5 BHK (₹19,500), 4 BHK (₹16,000), 3 BHK (₹13,000), 2 BHK (₹6,500)",
+      "Traditional Kerala architecture with high wood-paneled ceilings & serene verandas",
+      "Prime location in Thiruvananthapuram with ample private parking",
+      "Full modern amenities: Air Conditioning in all rooms, high-speed Wi-Fi & Smart TV"
+    ],
+    amenities: [
+      { name: "Fast Wi-Fi (300Mbps)", icon: "Wifi" },
+      { name: "Air Conditioning (All BR)", icon: "Wind" },
+      { name: "Equipped Kitchen", icon: "Utensils" },
+      { name: "Free On-Site Parking", icon: "Car" },
+      { name: "HD Smart TV", icon: "Tv" },
+      { name: "Balcony & Garden View", icon: "Sun" },
+      { name: "Power Backup", icon: "Sparkles" },
+      { name: "Daily Housekeeping", icon: "Shirt" }
+    ],
+    bhkTiers: SREERAMAM_BHK_TIERS,
+  },
   {
     id: "1",
     name: "Devapadmam Heritage Stay (6 BHK)",
@@ -252,5 +365,9 @@ export const LUXURY_VILLAS: VillaData[] = [
 ];
 
 export function getVillaById(id: string): VillaData | undefined {
-  return LUXURY_VILLAS.find((v) => v.id === id || v.id === String(id));
+  return LUXURY_VILLAS.find((v) => 
+    v.id === id || 
+    v.id === String(id) ||
+    (id.toLowerCase() === "sreeramam" && (v.id === "5" || v.name.toLowerCase().includes("sreeramam")))
+  );
 }

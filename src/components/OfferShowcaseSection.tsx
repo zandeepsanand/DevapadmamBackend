@@ -24,12 +24,13 @@ export function OfferShowcaseSection() {
   ];
 
   const VILLA_NAMES = [
+    "Sreeramam 5bhk",
     "Devapadmam 6bhk",
     "Devapadmam 3bhk",
     "Minnaram 2bhk",
     "Naarayaneeyam 2bhk"
   ];
-  const VILLA_PRICES = ["25,000", "8,500", "6,500", "3,500"];
+  const VILLA_PRICES = ["19,500", "25,000", "8,500", "6,500", "3,500"];
 
   useEffect(() => {
     const interval = setInterval(() => {

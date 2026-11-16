@@ -5,14 +5,32 @@ import { DayPicker, DateRange } from "react-day-picker";
 import "react-day-picker/style.css";
 import { differenceInDays, format } from "date-fns";
 import { Calendar as CalendarIcon, ShieldCheck, Sparkles, AlertCircle, Users, PhoneCall } from "lucide-react";
+import { BhkTier } from "@/lib/villasData";
 
 interface BookingWidgetProps {
   pricePerNight: number;
   bookedDateStrings: string[];
   villaName?: string;
+  bhkTiers?: BhkTier[];
+  initialBhk?: number;
 }
 
-export function BookingWidget({ pricePerNight, bookedDateStrings, villaName = "Devapadmam Villa" }: BookingWidgetProps) {
+export function BookingWidget({ 
+  pricePerNight, 
+  bookedDateStrings, 
+  villaName = "Devapadmam Villa",
+  bhkTiers,
+  initialBhk,
+}: BookingWidgetProps) {
+  const [selectedBhk, setSelectedBhk] = useState<number | null>(() => {
+    if (initialBhk) return initialBhk;
+    if (bhkTiers && bhkTiers.length > 0) return bhkTiers[0].bhk;
+    return null;
+  });
+
+  const currentTier = bhkTiers?.find((t) => t.bhk === selectedBhk);
+  const effectivePrice = currentTier ? currentTier.pricePerNight : pricePerNight;
+
   const [range, setRange] = useState<DateRange | undefined>();
   const [guests, setGuests] = useState(1);
 
@@ -30,7 +48,8 @@ export function BookingWidget({ pricePerNight, bookedDateStrings, villaName = "D
     const checkInDate = format(range.from, "MMM d, yyyy");
     const checkOutDate = range.to ? format(range.to, "MMM d, yyyy") : format(range.from, "MMM d, yyyy");
     
-    const message = `Hi, I would like to reserve ${villaName} for ${totalNights} night(s).\nCheck-in: ${checkInDate}\nCheckout: ${checkOutDate}\nGuests: ${guests}`;
+    const bhkLabel = currentTier ? ` (${currentTier.label} @ ₹${currentTier.pricePerNight.toLocaleString('en-IN')}/day)` : "";
+    const message = `Hi, I would like to reserve ${villaName}${bhkLabel} for ${totalNights} night(s).\nCheck-in: ${checkInDate}\nCheckout: ${checkOutDate}\nGuests: ${guests}`;
     const whatsappUrl = `https://wa.me/918606783324?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
@@ -41,8 +60,13 @@ export function BookingWidget({ pricePerNight, bookedDateStrings, villaName = "D
       {/* Header Price */}
       <div className="flex items-baseline justify-between border-b border-border/60 pb-4">
         <div>
-          <span className="font-serif text-3xl font-bold text-foreground">₹{pricePerNight.toLocaleString('en-IN')}</span>
+          <span className="font-serif text-3xl font-bold text-foreground">₹{effectivePrice.toLocaleString('en-IN')}</span>
           <span className="text-muted-foreground text-xs font-medium ml-1">/ night</span>
+          {currentTier && (
+            <div className="text-xs font-semibold text-amber-600 dark:text-amber-400 mt-0.5">
+              {currentTier.label} Configuration
+            </div>
+          )}
         </div>
         <div className="flex items-center gap-1 text-xs font-semibold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full border border-emerald-200 dark:border-emerald-800">
           <span className="relative flex h-2 w-2">
@@ -52,6 +76,45 @@ export function BookingWidget({ pricePerNight, bookedDateStrings, villaName = "D
           <span>Airbnb Synced</span>
         </div>
       </div>
+
+      {/* BHK Tier Switcher for Sreeramam */}
+      {bhkTiers && bhkTiers.length > 0 && (
+        <div className="space-y-2 pb-3 border-b border-border/60">
+          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-muted-foreground">
+            <span className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400">
+              <Sparkles className="w-3.5 h-3.5" /> Select BHK Configuration:
+            </span>
+            <span className="text-foreground">{currentTier?.label}</span>
+          </div>
+          <div className="grid grid-cols-4 gap-2">
+            {bhkTiers.map((tier) => {
+              const isSelected = selectedBhk === tier.bhk;
+              return (
+                <button
+                  key={tier.bhk}
+                  type="button"
+                  onClick={() => setSelectedBhk(tier.bhk)}
+                  className={`py-2 px-1 rounded-xl text-center transition-all duration-200 border cursor-pointer ${
+                    isSelected
+                      ? "gold-gradient-bg text-white border-amber-500 shadow-md font-bold scale-[1.03]"
+                      : "bg-background text-foreground border-border hover:border-amber-400 font-medium hover:bg-muted/50"
+                  }`}
+                >
+                  <div className="text-xs font-bold">{tier.label}</div>
+                  <div className={`text-[10px] mt-0.5 ${isSelected ? "text-amber-100 font-bold" : "text-emerald-600 dark:text-emerald-400 font-semibold"}`}>
+                    ₹{(tier.pricePerNight).toLocaleString("en-IN")}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+          {currentTier?.description && (
+            <p className="text-[11px] text-muted-foreground pt-1 leading-relaxed">
+              {currentTier.description}
+            </p>
+          )}
+        </div>
+      )}
 
       {/* Check-in / Checkout Selector Pills */}
       <div className="grid grid-cols-2 border border-border rounded-2xl overflow-hidden bg-background">
