@@ -3,7 +3,16 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import "./globals.css";
 import { SearchFilterProvider } from "@/context/SearchFilterContext";
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : "https://devapadmam.com");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Devapadmam Heritage Stay | Luxury Villas in Trivandrum",
   description: "Experience the cinematic allure of a bygone era. A sanctuary of heritage and timeless luxury in Kerala.",
   verification: {
