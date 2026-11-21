@@ -6,6 +6,9 @@ import { SearchFilterProvider } from "@/context/SearchFilterContext";
 export const metadata: Metadata = {
   title: "Devapadmam Heritage Stay | Luxury Villas in Trivandrum",
   description: "Experience the cinematic allure of a bygone era. A sanctuary of heritage and timeless luxury in Kerala.",
+  verification: {
+    google: "googledb4b5371a40aa379",
+  },
 };
 
 export const viewport = {
